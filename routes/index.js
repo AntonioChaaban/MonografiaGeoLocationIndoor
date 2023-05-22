@@ -7,31 +7,69 @@ var stats = require("stats-lite");
 //Definição de variaveis necessarias para todo o processo de localização
 let minhasInstancias = [];
 const blocos = [];
-const posicaoAtual = [];
+
 
 //Definição de linha de percurso para o ponteiro de posicionamento
+const polyBloco1ABloco12 = [[-5378050.936841136,-1140239.8477179788],
+                            [-5378051.2326916205,-1140238.3321621572],
+                            [-5378052.429888388,-1140237.9019187817],
+                            [-5378053.994576692,-1140237.287124286],
+                            [-5378054.0720900195,-1140234.6921608197],
+                            [-5378055.56213269,-1140234.5998845808],
+                            [-5378057.654938721,-1140234.3239484641],
+                            [-5378058.849267181,-1140233.129619921],
+                            [-5378060.7900509285,-1140233.0549743862],
+                            [-5378059.521076941,-1140231.4127726392]];
+
+const polyBloco1ABloco9 = [[-5378050.936841136,-1140239.8477179788],
+                           [-5378051.2326916205,-1140238.3321621572],
+                           [-5378052.429888388,-1140237.9019187817],
+                           [-5378053.994576692,-1140237.287124286],
+                           [-5378054.0720900195,-1140234.6921608197],
+                           [-5378055.56213269,-1140234.5998845808],
+                           [-5378057.654938721,-1140234.3239484641],
+                           [-5378060.640759871,-1140235.0704038048],
+                           [-5378060.864696457,-1140236.7872510862]];
+
+const polyBloco1ABloco5 = [[-5378050.936841136,-1140239.8477179788],
+                           [-5378051.2326916205,-1140238.3321621572],
+                           [-5378052.429888388,-1140237.9019187817],
+                           [-5378053.994576692,-1140237.287124286],
+                           [-5378055.188905488,-1140237.8096429855],
+                           [-5378055.935361086,-1140238.3321617108],
+                           [-5378055.860715886,-1140239.8997182415]];
+
+const polyBloco2ABloco12 = [[-5378055.860715886,-1140239.8997182415],
+                            [-5378055.935361086,-1140238.3321617108],
+                            [-5378055.188905488,-1140237.8096429855],
+                            [-5378053.994576692,-1140237.287124286],
+                            [-5378054.0720900195,-1140234.6921608197],
+                            [-5378055.56213269,-1140234.5998845808],
+                            [-5378057.654938721,-1140234.3239484641],
+                            [-5378058.849267181,-1140233.129619921],
+                            [-5378060.7900509285,-1140233.0549743862],
+                            [-5378059.521076941,-1140231.4127726392]];  
+
+const polyBloco2ABloco9 = [[-5378055.860715886,-1140239.8997182415],
+                           [-5378055.935361086,-1140238.3321617108],
+                           [-5378055.188905488,-1140237.8096429855],
+                           [-5378053.994576692,-1140237.287124286],
+                           [-5378054.0720900195,-1140234.6921608197],
+                           [-5378055.56213269,-1140234.5998845808],
+                           [-5378057.654938721,-1140234.3239484641],
+                           [-5378060.640759871,-1140235.0704038048],
+                           [-5378060.864696457,-1140236.7872510862]];                         
+
+const percursosEntreBlocos = [polyBloco1ABloco12,polyBloco1ABloco9,polyBloco1ABloco5,polyBloco2ABloco12,polyBloco2ABloco9];
 const polyQuarto1 = [[-5378050.936841136,-1140239.8477179788],[-5378051.2326916205,-1140238.3321621572],[-5378052.429888388,-1140237.9019187817]];
-const polyCorredorQuarto1 = [[-5378052.429888388,-1140237.9019187817],[-5378053.994576692,-1140237.287124286]];
 
 const polyQuarto2 = [[-5378055.188905488,-1140237.8096429855],[-5378055.935361086,-1140238.3321617108],[-5378055.860715886,-1140239.8997182415]];
-const polyCorredorQuarto2 = [[-5378055.188905488,-1140237.8096429855],[-5378053.994576692,-1140237.287124286]];
 
 const polyCorredor = [[-5378053.994576692,-1140237.287124286],[-5378054.0720900195,-1140234.6921608197]];
-const polyCorredorSala = [[-5378054.0720900195,-1140234.6921608197],[-5378055.56213269,-1140234.5998845808]];
 
 const polySala = [[-5378055.56213269,-1140234.5998845808],[-5378057.654938721,-1140234.3239484641],[-5378060.640759871,-1140235.0704038048],[-5378060.864696457,-1140236.7872510862]];
-const polySalaCozinha = [[-5378055.56213269,-1140234.5998845808],[-5378057.654938721,-1140234.3239484641],[-5378058.849267181,-1140233.129619921]];
 
 const polyCozinha = [[-5378058.849267181,-1140233.129619921],[-5378060.7900509285,-1140233.0549743862],[-5378059.521076941,-1140231.4127726392]];
-
-//Definição de objeto utilizado para conversar com o front da aplicação
-// const backToFront = {
-//   nomeDoAmbiente: '',
-//   bloco: 0,
-//   deslocamento: false,
-//   lineString: [[]],
-//   cordenadas: [[]],
-// }
 
 //Definição de classe para o preencimento dos dados vindos da placa esp32 para localização atual e suas variaveis
 class devices {
@@ -150,7 +188,7 @@ blocos[1].nomeDoAmbienteOndeEstaOBloco = 'Quarto1';
 blocos[1].cordenadasDoBloco = [-5378052.429888388,-1140237.9019187817];
 blocos[1].polyAmbiente = polyQuarto1;
 
-blocos[2].placasComMenorSinal = [1,2];
+blocos[2].placasComMenorSinal = [1,2,3];
 blocos[2].nomeDoAmbienteOndeEstaOBloco = 'Corredor';
 blocos[2].cordenadasDoBloco = [-5378053.994576692,-1140237.287124286];
 blocos[2].polyAmbiente = polyCorredor;
@@ -185,7 +223,7 @@ blocos[8].nomeDoAmbienteOndeEstaOBloco = 'Sala';
 blocos[8].cordenadasDoBloco = [-5378060.864696457,-1140236.7872510862];
 blocos[8].polyAmbiente = polySala;
 
-blocos[9].placasComMenorSinal = [5];
+blocos[9].placasComMenorSinal = [4,5];
 blocos[9].nomeDoAmbienteOndeEstaOBloco = 'Cozinha';
 blocos[9].cordenadasDoBloco = [-5378058.849267181,-1140233.129619921];
 blocos[9].polyAmbiente = polyCozinha;
@@ -243,10 +281,6 @@ const atualizarDados = async(minhasInstancias, rssi, nomeplaca) => {
 
   minhasInstancias[index].rssi = rssi;
   minhasInstancias[index].adicionarLeitura(rssi);
-  // console.log("_________________________________");
-  // console.log(minhasInstancias[index].leituras);
-  // console.log(minhasInstancias[index].nome);
-  // console.log("_________________________________");
 
   if(minhasInstancias[index].leituras.length > 6){
     minhasInstancias[index].leituras.splice(0,2);
@@ -268,7 +302,6 @@ const atualizarDados = async(minhasInstancias, rssi, nomeplaca) => {
       }
     }
   });
-  //console.log(placasPreparadas);
   if(placasPreparadas.length == 5){
     console.log("******* T O D O S O C H E I O S *************");
     minhasInstancias.forEach((element) => {
@@ -276,19 +309,16 @@ const atualizarDados = async(minhasInstancias, rssi, nomeplaca) => {
     });
     liberarAnaliseDePosicionamento = true;
   }
-
-  //console.log("Quantidade de vezes que foram passadas aqui:"+contadorDeVezesQuePassouEmAtualizarDados);
   return minhasInstancias;
 };
 
+const localizasoes = [];
 
 // GET Dados de deslocamento do ponto virtual
 router.get('/geoData', cors(), function(req, res, next) {
-  const enviandoDados = backToFront;
+  const enviandoDados = localizasoes[localizasoes.length - 1];
   res.json(enviandoDados);
 });
-
-const localizasoes = [];
 
 router.post('/tcp-data', async (req, res, next) =>{
   
@@ -319,7 +349,7 @@ router.post('/tcp-data', async (req, res, next) =>{
     minhasInstancias = await atualizarDados(minhasInstancias,rssi,nomeplaca);
 
     console.log("Todos se conectaram");
-    // nao fazer todo o tempo o posicionamento, só dps que todos tiverem mais de 6 
+    // nao fazer todo o tempo o posicionamento, só dps que todos tiverem mais de 6 leituras
     if(liberarAnaliseDePosicionamento){
       console.log("******** P A S S O U/ A Q U I/ P A R A/ M E D I R/ O N D E/ E S T A ******************");
 
@@ -358,11 +388,6 @@ router.post('/tcp-data', async (req, res, next) =>{
             bloco.placas.forEach((LeiturasPlaca) => {
               minhasInstancias.forEach(placas => {
                 if(LeiturasPlaca.nome === placas.nome){
-                  //console.log("_______________________________________________________");
-                  //console.log("Leitura para o Bloco:"+ bloco.id);
-                  //console.log("Entre as placas:"+ LeiturasPlaca.nome + " e " + LeiturasPlaca.nome);
-                  //console.log("Sendo a leitura dos fingerprints"+ LeiturasPlaca.nome);
-                  //console.log("E o dado atual na placa"+ placas.nome);
           
                   let distancia = Math.sqrt(
                     (LeiturasPlaca.mean_rssi - placas.mean_rssi) ** 2 +
@@ -379,8 +404,6 @@ router.post('/tcp-data', async (req, res, next) =>{
                 }
               });
             });
-            //let placaLida = bloco.placas.find((a) => a.id === placaMenorSinal); 
-            //let placaParaSerLida = minhasInstancias.find((a) => a.id === placaMenorSinal);
 
             let soma = ArrayDeDistanciaPorBlocoEntrePlacas.reduce(function(soma, i) {
               return soma + i;
@@ -451,15 +474,12 @@ router.post('/tcp-data', async (req, res, next) =>{
 
       const backToFront = {
         nomeDoAmbiente: blocoFinal.nomeDoAmbienteOndeEstaOBloco,
-        bloco: blocoFinal.id,
+        bloco: blocoFinal,
         deslocamento: false,
         lineString: [],
-        cordenadas: [blocoFinal.cordenadasDoBloco],
-        polyAmbiente: [blocoFinal.polyAmbiente],
+        cordenadas: blocoFinal.cordenadasDoBloco,
+        polyAmbiente: blocoFinal.polyAmbiente,
       }
-
-      //localizasoes.push(backToFront);
-      //console.log(localizasoes);
 
       if(localizasoes.length === 0){
         localizasoes.push(backToFront);
@@ -469,31 +489,65 @@ router.post('/tcp-data', async (req, res, next) =>{
       if(backToFront.nomeDoAmbiente === localizasoes[localizasoes.length - 1].nomeDoAmbiente){
 
         // se for no mesmo ambiente só q em blocos diferentes
-        if(!(localizasoes[localizasoes.length - 1].bloco === backToFront.bloco)){
-          //Aqui eu vou achar a posição no array do bloco atual e vou montar o lineString
-          // andando pelo array
-          let cordenadasAnteriores = backToFront.polyAmbiente.indexOf(localizasoes[localizasoes.length - 1].cordenadas);
-          let cordenadasAtuais = backToFront.polyAmbiente.indexOf(backToFront.cordenadas);
+        if(localizasoes[localizasoes.length - 1].bloco.id !== backToFront.bloco.id){
+          
+          let indexNoPolyAmbiente = backToFront.polyAmbiente.findIndex((element) => JSON.stringify(element) === JSON.stringify(backToFront.cordenadas));
+          let indexNoPolyAmbienteAnterior = backToFront.polyAmbiente.findIndex((element) => JSON.stringify(element) === JSON.stringify(localizasoes[localizasoes.length - 1].cordenadas));
 
-          if(cordenadasAnteriores === 0){
-            backToFront.lineString = backToFront.polyAmbiente;
-            backToFront.deslocamento = true;
-            localizasoes.push(backToFront);
-          }else{
-            backToFront.lineString = backToFront.polyAmbiente.reverse();
-            backToFront.deslocamento = true;
-            localizasoes.push(backToFront);
+          let listaAuxiliarDeDeslocamentoNoAmbiente = [];
+
+          if(indexNoPolyAmbienteAnterior < indexNoPolyAmbiente){
+            for (let index = indexNoPolyAmbienteAnterior; index <= indexNoPolyAmbiente; index++) {
+              listaAuxiliarDeDeslocamentoNoAmbiente.push(backToFront.polyAmbiente[index]);
+            }
+          }
+          if(indexNoPolyAmbienteAnterior > indexNoPolyAmbiente){
+            for (let index = indexNoPolyAmbienteAnterior; index >= indexNoPolyAmbiente;index--) {
+              listaAuxiliarDeDeslocamentoNoAmbiente.push(backToFront.polyAmbiente[index]);
+            }
           }
 
-          //lidar com o ambiente da sala
-          // if(backToFront.polyAmbiente > 3){
-          // }
+          backToFront.lineString = listaAuxiliarDeDeslocamentoNoAmbiente;
+          backToFront.deslocamento = true;
+          localizasoes.push(backToFront);
+
         }else{
           localizasoes.push(backToFront);
         }
-        //console.log(backToFront);
       }
       // Posição atual em ambiete diferente da anterior
+      if(backToFront.nomeDoAmbiente !== localizasoes[localizasoes.length - 1].nomeDoAmbiente){
+        let blocoAntigo = localizasoes[localizasoes.length - 1].bloco;
+        let numerodevezes = 0;
+        percursosEntreBlocos.forEach((trajetorias) => {
+          if(trajetorias.some((element) => JSON.stringify(element) === JSON.stringify(backToFront.cordenadas)) && trajetorias.some((element) => JSON.stringify(element) === JSON.stringify(blocoAntigo.cordenadasDoBloco))){
+            console.log("Achou um vetor q tem as posições");
+            let indexNoPolyAmbiente = trajetorias.findIndex((element) => JSON.stringify(element) === JSON.stringify(backToFront.cordenadas));
+            let indexNoPolyAmbienteAnterior = trajetorias.findIndex((element) => JSON.stringify(element) === JSON.stringify(blocoAntigo.cordenadasDoBloco));
+
+            let listaAuxiliarDeDeslocamentoNoAmbiente = [];
+
+            if(indexNoPolyAmbienteAnterior < indexNoPolyAmbiente){
+              for (let index = indexNoPolyAmbienteAnterior; index <= indexNoPolyAmbiente; index++) {
+                listaAuxiliarDeDeslocamentoNoAmbiente.push(trajetorias[index]);
+              }
+            }
+            if(indexNoPolyAmbienteAnterior > indexNoPolyAmbiente){
+              for (let index = indexNoPolyAmbienteAnterior; index >= indexNoPolyAmbiente;index--) {
+                listaAuxiliarDeDeslocamentoNoAmbiente.push(trajetorias[index]);
+              }
+            }
+            numerodevezes++;
+            console.log(listaAuxiliarDeDeslocamentoNoAmbiente);
+            console.log(numerodevezes);
+            backToFront.lineString = listaAuxiliarDeDeslocamentoNoAmbiente;
+            backToFront.deslocamento = true;
+            localizasoes.push(backToFront);
+          }
+        });
+        
+      }
+      console.log(localizasoes);
     }
     res.send('JSON recebido com sucesso!');
   }else{
