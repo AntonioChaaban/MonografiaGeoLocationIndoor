@@ -269,23 +269,26 @@ console.log("o Codigo antigo terminava aqui backup3");
 
 let liberarAnaliseDePosicionamento = false;
 let placasParaSeremZeradas = false;
-let contadorDeVezesQuePassouEmAtualizarDados = 0;
 
 const atualizarDados = async(minhasInstancias, rssi, nomeplaca) => {
   
   let placasPreparadas = [];
+  //console.log(nomeplaca);
 
-  contadorDeVezesQuePassouEmAtualizarDados++;
   let devices = minhasInstancias.find(devices => devices.nome === nomeplaca);
   let index = minhasInstancias.indexOf(devices);
+  //console.log(minhasInstancias[index].leituras.length);
 
-  minhasInstancias[index].rssi = rssi;
-  minhasInstancias[index].adicionarLeitura(rssi);
-
-  if(minhasInstancias[index].leituras.length > 6){
-    minhasInstancias[index].leituras.splice(0,2);
+  if(minhasInstancias[index].leituras.length <= 6){
+    minhasInstancias[index].rssi = rssi;
+    minhasInstancias[index].adicionarLeitura(rssi);
   }
+  if(minhasInstancias[index].leituras.length == 7){
+    minhasInstancias[index].leituras.splice(0,1);
+  }
+
   if(placasParaSeremZeradas){
+    //console.log("PASSOU AQUI PARA ZERAR AS PLCAS");
     placasParaSeremZeradas = false;
     minhasInstancias.forEach((devices) => {
       devices.leituras.length = 0;
@@ -319,7 +322,7 @@ router.get('/geoData', cors(), function(req, res, next) {
   const enviandoDados = localizasoes[localizasoes.length - 1];
   res.json(enviandoDados);
 });
-
+// Rota para criação de arquivos .txt com os dados Brutos das multiplas placas sobre um determinada ponto e dispositivo
 router.post('/tcp-data', async (req, res, next) =>{
   
   //res.send('JSON recebido com sucesso!'); 
@@ -348,7 +351,7 @@ router.post('/tcp-data', async (req, res, next) =>{
   if(minhasInstancias.length == 5){ 
     minhasInstancias = await atualizarDados(minhasInstancias,rssi,nomeplaca);
 
-    console.log("Todos se conectaram");
+    //console.log("Todos se conectaram");
     // nao fazer todo o tempo o posicionamento, só dps que todos tiverem mais de 6 leituras
     if(liberarAnaliseDePosicionamento){
       console.log("******** P A S S O U/ A Q U I/ P A R A/ M E D I R/ O N D E/ E S T A ******************");
@@ -471,6 +474,14 @@ router.post('/tcp-data', async (req, res, next) =>{
       console.log(auxregresao);
       console.log("%%%%%%%% D I S P O S I T I V O/ E N C O N T R A D O/ N O/ B L O C O %%%%%%%%%%%%%%%%%%");
       console.log(blocoFinal);
+
+      let nomeDoAqrquivo = 'ResultadosDasMedisoesAndandoEntreBloco7ABloco9.txt';
+
+      fs.appendFile(nomeDoAqrquivo, `${blocoFinal.id},\n`, (err) => {
+        if (err) {
+          console.error(err);
+        } 
+      });
 
       const backToFront = {
         nomeDoAmbiente: blocoFinal.nomeDoAmbienteOndeEstaOBloco,
